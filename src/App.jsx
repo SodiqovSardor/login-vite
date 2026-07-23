@@ -4,6 +4,7 @@ import About from './componentes/About'
 import Contact from './componentes/Contact'
 import Login from './componentes/Login'
 import Dashboard from './componentes/Dashboard'
+import ProtectedRoute from './componentes/ProtectedRoute'
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
     </Routes>
   )
 }
