@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Login = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('johnd')
   const [password, setPassword] = useState('m38rmF$')
   const [trigger, setTrigger] = useState(false)
@@ -21,6 +23,7 @@ const Login = () => {
           localStorage.setItem('token', data.token)
           console.log(data.token)
           toast.success('Logged in successfully!')
+          navigate('/dashboard')
         } else {
           toast.error('Login failed. Try again.')
         }
@@ -37,35 +40,47 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-gray-100 p-10" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <ToastContainer />
-      <form onSubmit={handleLogin} style={{ width: '400px' }} className="bg-white p-6 rounded border">
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+      <form
+        onSubmit={handleLogin}
+        className="w-full max-w-sm"
+      >
+        <h1 className="text-2xl font-semibold text-gray-900 text-center mb-8">
+          Sign in to your account
+        </h1>
 
-        <div className="mb-4">
-          <label className="block mb-1">Username</label>
+        <div className="mb-5">
+          <label className="block mb-1.5 text-sm font-medium text-gray-700">
+            Username
+          </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
-            className="border p-2 w-full"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1">Password</label>
+        <div className="mb-6">
+          <label className="block mb-1.5 text-sm font-medium text-gray-700">
+            Password
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            className="border p-2 w-full"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
           />
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white p-2 w-full rounded">
-          Login
+        <button
+          type="submit"
+          className="w-full py-2.5 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition cursor-pointer"
+        >
+          Sign In
         </button>
       </form>
     </div>
