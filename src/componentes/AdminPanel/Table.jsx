@@ -20,7 +20,6 @@ const Table = ({ data }) => {
             </>
           ) : path.includes("carts") ? (
             <>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Cart ID</th>
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">User ID</th>
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Date</th>
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Items</th>
