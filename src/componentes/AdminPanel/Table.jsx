@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-const Table = ({ data }) => {
+const Table = ({ data, deleteProduct }) => {
   const location = useLocation();
   const path = location.pathname;
 
@@ -51,7 +51,12 @@ const Table = ({ data }) => {
                 <td className="border border-gray-300 px-3 py-2">
                   <div className="flex gap-2">
                     <button className="px-2 py-1 text-xs bg-blue-100 text-blue-700 border border-blue-300 cursor-pointer">Edit</button>
-                    <button className="px-2 py-1 text-xs bg-red-100 text-red-700 border border-red-300 cursor-pointer">Delete</button>
+                    <button
+                      onClick={() => deleteProduct(item.id)}
+                      className="px-2 py-1 text-xs bg-red-100 text-red-700 border border-red-300 cursor-pointer"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </>

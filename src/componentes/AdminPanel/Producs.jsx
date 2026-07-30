@@ -17,6 +17,18 @@ const Producs = () => {
       });
   }, []);
 
+  const deleteProduct = (id) => {
+    fetch(`https://fakestoreapi.com/products/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setProducts(products.filter((product) => product.id !== id));
+      })
+      .catch((err) => {
+        console.log(" Sum error happened: ", err);
+      });
+  };
+
   if (loading) {
     return (
       <div>
@@ -29,7 +41,7 @@ const Producs = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Products</h1>
-      <Table data={products} />
+      <Table data={products} deleteProduct={deleteProduct} />
     </div>
   );
 };
