@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import Table from "./Table";
+import DeleteModalWindow from "./ModalWindows/DeleteModalWindow";
+import AddModalWindow from "./ModalWindows/AddModalWindow";
 
 const Producs = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const api = "https://fakestoreapi.com/products";
 
@@ -19,34 +22,42 @@ const Producs = () => {
       });
   }, []);
 
+  // Delete Modal handlers
   const handleDeleteClick = (id) => {
     setSelectedId(id);
     setShowModal(true);
   };
 
-  const handleConfirmDelete = () => {
-    fetch(`https://fakestoreapi.com/products/${selectedId}`, {
-      method: "DELETE",
-    })
-      .then(() => {
-        setProducts(products.filter((product) => product.id !== selectedId));
-        setShowModal(false);
-        setSelectedId(null);
-      })
-      .catch((err) => {
-        console.log(" Sum error happened: ", err);
-      });
+  const handleProductDeleted = (deletedId) => {
+    setProducts(products.filter((product) => product.id !== deletedId));
   };
 
-  const handleCancelDelete = () => {
+  const handleCloseModal = () => {
     setShowModal(false);
     setSelectedId(null);
+  };
+
+  // Add Modal handlers
+  const handleAddClick = () => {
+    setShowAddModal(true);
+  };
+
+  const handleProductAdded = (newProduct) => {
+    setProducts([newProduct, ...products]);
   };
 
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Products</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+          <button
+            onClick={handleAddClick}
+            className="px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 cursor-pointer"
+          >
+            Add Product
+          </button>
+        </div>
         <p className="text-gray-500">Loading products...</p>
       </div>
     );
@@ -54,31 +65,31 @@ const Producs = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Products</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+        <button
+          onClick={handleAddClick}
+          className="px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 cursor-pointer"
+        >
+          Add Product
+        </button>
+      </div>
       <Table data={products} deleteProduct={handleDeleteClick} />
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 w-80 border border-gray-300 shadow">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">Delete Product</h2>
-            <p className="text-sm text-gray-600 mb-6">Are you sure you want to delete this product?</p>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={handleCancelDelete}
-                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmDelete}
-                className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 cursor-pointer"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Delete Modal */}
+      <DeleteModalWindow
+        show={showModal}
+        productId={selectedId}
+        onClose={handleCloseModal}
+        onDeleted={handleProductDeleted}
+      />
+
+      {/* Add Modal */}
+      <AddModalWindow
+        show={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAdded={handleProductAdded}
+      />
     </div>
   );
 };
