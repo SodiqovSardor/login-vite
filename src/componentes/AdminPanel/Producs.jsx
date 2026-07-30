@@ -4,6 +4,8 @@ import Table from "./Table";
 const Producs = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const api = "https://fakestoreapi.com/products";
 
   useEffect(() => {
@@ -17,16 +19,28 @@ const Producs = () => {
       });
   }, []);
 
-  const deleteProduct = (id) => {
-    fetch(`https://fakestoreapi.com/products/${id}`, {
+  const handleDeleteClick = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    fetch(`https://fakestoreapi.com/products/${selectedId}`, {
       method: "DELETE",
     })
       .then(() => {
-        setProducts(products.filter((product) => product.id !== id));
+        setProducts(products.filter((product) => product.id !== selectedId));
+        setShowModal(false);
+        setSelectedId(null);
       })
       .catch((err) => {
         console.log(" Sum error happened: ", err);
       });
+  };
+
+  const handleCancelDelete = () => {
+    setShowModal(false);
+    setSelectedId(null);
   };
 
   if (loading) {
@@ -41,7 +55,30 @@ const Producs = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Products</h1>
-      <Table data={products} deleteProduct={deleteProduct} />
+      <Table data={products} deleteProduct={handleDeleteClick} />
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 w-80 border border-gray-300 shadow">
+            <h2 className="text-lg font-bold text-gray-900 mb-2">Delete Product</h2>
+            <p className="text-sm text-gray-600 mb-6">Are you sure you want to delete this product?</p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={handleCancelDelete}
+                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
