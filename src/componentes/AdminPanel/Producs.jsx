@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import Table from "./Table";
 import DeleteModalWindow from "./ModalWindows/DeleteModalWindow";
 import AddModalWindow from "./ModalWindows/AddModalWindow";
+import EditModalWindow from "./ModalWindows/EditModalWindow";
 
 const Producs = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const api = "https://fakestoreapi.com/products";
 
   useEffect(() => {
@@ -43,7 +46,26 @@ const Producs = () => {
   };
 
   const handleProductAdded = (newProduct) => {
-    setProducts([newProduct, ...products]);
+    setProducts([...products , newProduct]);
+  };
+
+  // Edit Modal handlers
+  const handleEditClick = (product) => {
+    setSelectedProduct(product);
+    setShowEditModal(true);
+  };
+
+  const handleProductUpdated = (updatedProduct) => {
+    setProducts(
+      products.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product
+      )
+    );
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setSelectedProduct(null);
   };
 
   if (loading) {
@@ -74,7 +96,11 @@ const Producs = () => {
           Add Product
         </button>
       </div>
-      <Table data={products} deleteProduct={handleDeleteClick} />
+      <Table
+        data={products}
+        deleteProduct={handleDeleteClick}
+        editProduct={handleEditClick}
+      />
 
       {/* Delete Modal */}
       <DeleteModalWindow
@@ -90,6 +116,16 @@ const Producs = () => {
         onClose={() => setShowAddModal(false)}
         onAdded={handleProductAdded}
       />
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <EditModalWindow
+          show={showEditModal}
+          product={selectedProduct}
+          onClose={handleCloseEditModal}
+          onUpdated={handleProductUpdated}
+        />
+      )}
     </div>
   );
 };
