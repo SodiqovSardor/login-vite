@@ -49,6 +49,10 @@ const Producs = () => {
     setProducts([...products , newProduct]);
   };
 
+  const handleCloseAddModal = () => {
+    setShowModal(false);
+  }
+
   // Edit Modal handlers
   const handleEditClick = (product) => {
     setSelectedProduct(product);
@@ -113,7 +117,7 @@ const Producs = () => {
       {/* Add Modal */}
       <AddModalWindow
         show={showAddModal}
-        onClose={() => setShowAddModal(false)}
+        onClose={handleCloseAddModal}
         onAdded={handleProductAdded}
       />
 
