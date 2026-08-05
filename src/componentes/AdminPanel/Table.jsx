@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-const Table = ({ data, deleteProduct, editProduct }) => {
+const Table = ({ data, deleteProduct, editProduct, deleteUser }) => {
   const location = useLocation();
   const path = location.pathname;
 
@@ -30,6 +30,7 @@ const Table = ({ data, deleteProduct, editProduct }) => {
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Username</th>
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Email</th>
               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Phone</th>
+              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">Actions</th>
             </>
           )}
 
@@ -77,6 +78,16 @@ const Table = ({ data, deleteProduct, editProduct }) => {
                 <td className="border border-gray-300 px-3 py-2 text-sm text-gray-700">{item.username}</td>
                 <td className="border border-gray-300 px-3 py-2 text-sm text-gray-700">{item.email}</td>
                 <td className="border border-gray-300 px-3 py-2 text-sm text-gray-700">{item.phone}</td>
+                <td className="border border-gray-300 px-3 py-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => deleteUser(item.id)}
+                      className="px-2 py-1 text-xs bg-red-100 text-red-700 border border-red-300 cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </>
             )}
 

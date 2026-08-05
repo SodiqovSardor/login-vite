@@ -50,7 +50,7 @@ const Producs = () => {
   };
 
   const handleCloseAddModal = () => {
-    setShowModal(false);
+    setShowAddModal(false);
   }
 
   // Edit Modal handlers
